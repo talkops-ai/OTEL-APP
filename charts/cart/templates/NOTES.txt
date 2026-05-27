@@ -1,0 +1,15 @@
+{{- $fullName := include "cart.fullname" . -}}
+🎉 {{ .Chart.Name }} has been deployed!
+
+📋 Release: {{ .Release.Name }}
+📦 Version: {{ .Chart.AppVersion }}
+🏷️  Namespace: {{ .Release.Namespace }}
+
+🔌 Service endpoint:
+   {{ $fullName }}:{{ .Values.service.port }}
+
+To verify the deployment:
+  kubectl get pods -l "app.kubernetes.io/name={{ include "cart.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -n {{ .Release.Namespace }}
+
+To check logs:
+  kubectl logs -l "app.kubernetes.io/name={{ include "cart.name" . }}" -n {{ .Release.Namespace }} -f

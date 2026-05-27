@@ -1,0 +1,14 @@
+apiVersion: v2
+type: application
+name: recommendation
+version: 0.1.0
+appVersion: "2.2.0"
+description: OTel Demo Recommendation Service - Python-based product recommendation engine
+home: https://github.com/open-telemetry/opentelemetry-demo
+sources:
+  - https://github.com/open-telemetry/opentelemetry-demo
+keywords:
+  - opentelemetry
+  - demo
+  - recommendation
+  - python

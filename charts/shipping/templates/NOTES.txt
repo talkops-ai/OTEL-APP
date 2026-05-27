@@ -1,0 +1,8 @@
+🎉 {{ include "shipping.fullname" . }} has been deployed!
+
+📋 Release: {{ .Release.Name }}
+📦 Version: {{ .Chart.AppVersion }}
+🏷️  Namespace: {{ .Release.Namespace }}
+
+🔌 Service endpoint:
+   {{ include "shipping.fullname" . }}:{{ .Values.service.port }}

@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "load-generator.fullname" . }}
+  labels:
+    {{- include "load-generator.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      {{- include "load-generator.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "load-generator.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "load-generator.serviceAccountName" . }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: load-generator
+          image: {{ include "load-generator.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+              name: service
+              protocol: TCP
+          env:
+            - name: LOCUST_WEB_HOST
+              value: "0.0.0.0"
+            - name: LOCUST_WEB_PORT
+              value: {{ .Values.service.port | quote }}
+            - name: LOCUST_USERS
+              value: {{ .Values.locust.users | quote }}
+            - name: LOCUST_SPAWN_RATE
+              value: {{ .Values.locust.spawnRate | quote }}
+            - name: LOCUST_HOST
+              value: "http://{{ .Values.dependencies.frontendProxy.host }}:{{ .Values.dependencies.frontendProxy.port }}"
+            - name: LOCUST_HEADLESS
+              value: {{ .Values.locust.headless | quote }}
+            - name: LOCUST_AUTOSTART
+              value: {{ .Values.locust.autostart | quote }}
+            - name: LOCUST_BROWSER_TRAFFIC_ENABLED
+              value: {{ .Values.locust.browserTrafficEnabled | quote }}
+            - name: PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION
+              value: python
+            - name: FLAGD_HOST
+              value: {{ .Values.dependencies.flagd.host | quote }}
+            - name: FLAGD_PORT
+              value: {{ .Values.dependencies.flagd.port | quote }}
+            - name: FLAGD_OFREP_PORT
+              value: {{ .Values.dependencies.flagd.ofrepPort | quote }}
+            - name: OTEL_SERVICE_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: "metadata.labels['app.kubernetes.io/component']"
+            {{- if .Values.otel.enabled }}
+            - name: OTEL_COLLECTOR_NAME
+              value: {{ .Values.otel.collectorName | quote }}
+            - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+              value: cumulative
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: {{ .Values.otel.resourceAttributes | quote }}
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ include "load-generator.otelEndpoint" . }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -1,0 +1,104 @@
+# Flagd Feature Flag Service configuration
+replicaCount: 1
+revisionHistoryLimit: 10
+
+image:
+  repository: ghcr.io/open-feature/flagd
+  tag: "v0.12.9"
+  pullPolicy: IfNotPresent
+
+# Flagd UI sidecar container (disabled by default — Elixir BEAM VM needs ~1Gi)
+flagdUI:
+  enabled: false
+  image:
+    repository: ghcr.io/open-telemetry/demo
+    tag: "2.2.0-flagd-ui"
+    pullPolicy: IfNotPresent
+  port: 4000
+  resources:
+    requests:
+      cpu: 50m
+      memory: 200Mi
+    limits:
+      cpu: 300m
+      memory: 500Mi
+  secretKeyBase: yYrECL4qbNwleYInGJYvVnSkwJuSQJ4ijPTx5tirGUXrbznFIBFVJdPl5t6O9ASw
+  phxHost: localhost
+
+imagePullSecrets: []
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+service:
+  type: ClusterIP
+  rpcPort: 8013
+  ofrepPort: 8016
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 32Mi
+  limits:
+    cpu: 200m
+    memory: 75Mi
+
+podAnnotations:
+  resource.opentelemetry.io/service.namespace: otel-demo
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false  # flagd writes to /etc/flagd
+  capabilities:
+    drop:
+      - ALL
+
+podSecurityContext:
+  fsGroup: 1000
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: 8014
+  initialDelaySeconds: 10
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /readyz
+    port: 8014
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+startupProbe:
+  httpGet:
+    path: /readyz
+    port: 8014
+  initialDelaySeconds: 3
+  periodSeconds: 3
+  failureThreshold: 20
+
+terminationGracePeriodSeconds: 30
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+topologySpreadConstraints: []
+
+# OpenTelemetry configuration (disabled by default — enable when collector is ready)
+otel:
+  enabled: false
+  collectorName: otel-collector
+  resourceAttributes: "service.namespace=otel-demo"
+
+# Go memory limit
+goMemLimit: "60MiB"

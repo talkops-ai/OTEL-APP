@@ -1,0 +1,72 @@
+# Image Provider Service configuration
+replicaCount: 1
+revisionHistoryLimit: 10
+
+image:
+  repository: ghcr.io/open-telemetry/demo
+  tag: ""  # defaults to Chart.AppVersion with -image-provider suffix
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+service:
+  type: ClusterIP
+  port: 8081
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 32Mi
+  limits:
+    cpu: 200m
+    memory: 120Mi
+
+podAnnotations:
+  resource.opentelemetry.io/service.namespace: otel-demo
+
+securityContext: {}  # nginx writes to /etc/nginx at startup, needs root
+
+podSecurityContext:
+  fsGroup: 1000
+
+livenessProbe:
+  tcpSocket:
+    port: 8081
+  initialDelaySeconds: 10
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  tcpSocket:
+    port: 8081
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+startupProbe:
+  tcpSocket:
+    port: 8081
+  initialDelaySeconds: 3
+  periodSeconds: 3
+  failureThreshold: 20
+
+terminationGracePeriodSeconds: 30
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+topologySpreadConstraints: []
+
+# OpenTelemetry configuration (disabled by default)
+otel:
+  enabled: false
+  collectorName: otel-collector
+  exporterEndpoint: ""
+  resourceAttributes: "service.namespace=otel-demo"

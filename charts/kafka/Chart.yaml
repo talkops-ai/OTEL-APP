@@ -1,0 +1,15 @@
+apiVersion: v2
+type: application
+name: kafka
+version: 0.1.0
+appVersion: "2.2.0"
+description: OTel Demo Kafka - Single-node KRaft-mode message broker
+home: https://github.com/open-telemetry/opentelemetry-demo
+sources:
+  - https://github.com/open-telemetry/opentelemetry-demo
+keywords:
+  - opentelemetry
+  - demo
+  - kafka
+  - kraft
+  - messaging

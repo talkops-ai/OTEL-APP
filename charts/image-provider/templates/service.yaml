@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "image-provider.fullname" . }}
+  labels:
+    {{- include "image-provider.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
+      name: service
+  selector:
+    {{- include "image-provider.selectorLabels" . | nindent 4 }}

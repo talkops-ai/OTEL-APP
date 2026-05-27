@@ -1,0 +1,101 @@
+# Load Generator (Locust) configuration
+replicaCount: 1
+revisionHistoryLimit: 10
+
+image:
+  repository: ghcr.io/open-telemetry/demo
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+service:
+  type: ClusterIP
+  port: 8089
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 500Mi
+  limits:
+    cpu: "1"
+    memory: 1500Mi
+
+podAnnotations:
+  resource.opentelemetry.io/service.namespace: otel-demo
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false  # Locust writes temp files
+  capabilities:
+    drop:
+      - ALL
+
+podSecurityContext:
+  fsGroup: 1000
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: service
+  initialDelaySeconds: 15
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: service
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+startupProbe:
+  httpGet:
+    path: /
+    port: service
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  failureThreshold: 30
+
+terminationGracePeriodSeconds: 30
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+topologySpreadConstraints: []
+
+# OpenTelemetry configuration (disabled by default — enable when collector is ready)
+otel:
+  enabled: false
+  collectorName: otel-collector
+  exporterEndpoint: ""  # auto-computed (gRPC 4317)
+  resourceAttributes: "service.namespace=otel-demo"
+
+# Locust settings
+locust:
+  users: "10"
+  spawnRate: "1"
+  headless: "false"
+  autostart: "false"
+  browserTrafficEnabled: "true"
+
+# Service dependencies
+dependencies:
+  frontendProxy:
+    host: frontend-proxy
+    port: "8080"
+  flagd:
+    host: flagd
+    port: "8013"
+    ofrepPort: "8016"

@@ -1,0 +1,85 @@
+# Kafka configuration (KRaft mode — no ZooKeeper needed)
+replicaCount: 1
+revisionHistoryLimit: 10
+
+image:
+  repository: ghcr.io/open-telemetry/demo
+  tag: ""  # defaults to Chart.AppVersion with -kafka suffix
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+service:
+  type: ClusterIP
+  plaintextPort: 9092
+  controllerPort: 9093
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 400Mi
+  limits:
+    cpu: "1"
+    memory: 700Mi
+
+podAnnotations:
+  resource.opentelemetry.io/service.namespace: otel-demo
+
+securityContext:
+  runAsUser: 1000    # appuser
+  runAsGroup: 1000
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false  # Kafka writes to /tmp and data dirs
+  capabilities:
+    drop:
+      - ALL
+
+podSecurityContext:
+  fsGroup: 1000
+
+livenessProbe:
+  tcpSocket:
+    port: plaintext
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  tcpSocket:
+    port: plaintext
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+startupProbe:
+  tcpSocket:
+    port: plaintext
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  failureThreshold: 30
+
+terminationGracePeriodSeconds: 60
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+topologySpreadConstraints: []
+
+# OpenTelemetry configuration (disabled by default — enable when collector is ready)
+otel:
+  enabled: false
+  collectorName: otel-collector
+  exporterEndpoint: ""  # auto-computed (HTTP 4318)
+  resourceAttributes: "service.namespace=otel-demo"
+
+# Kafka-specific settings
+kafka:
+  heapOpts: "-Xmx400M -Xms400M"

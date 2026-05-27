@@ -1,0 +1,84 @@
+# Valkey Cart configuration
+replicaCount: 1
+revisionHistoryLimit: 10
+
+image:
+  repository: valkey/valkey
+  tag: "9.0.1-alpine3.23"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+service:
+  type: ClusterIP
+  port: 6379
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 10Mi
+  limits:
+    cpu: 100m
+    memory: 20Mi
+
+podAnnotations:
+  resource.opentelemetry.io/service.namespace: otel-demo
+  io.opentelemetry.discovery.metrics/enabled: "true"
+  io.opentelemetry.discovery.metrics/scraper: redis
+  io.opentelemetry.discovery.metrics/config: |
+    username: valkey
+    collection_interval: 10s
+
+securityContext:
+  runAsUser: 999     # valkey
+  runAsGroup: 1000
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false  # Valkey needs writable /data for RDB snapshots
+  capabilities:
+    drop:
+      - ALL
+
+podSecurityContext:
+  fsGroup: 1000
+
+livenessProbe:
+  exec:
+    command:
+      - valkey-cli
+      - ping
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  exec:
+    command:
+      - valkey-cli
+      - ping
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+startupProbe:
+  exec:
+    command:
+      - valkey-cli
+      - ping
+  initialDelaySeconds: 3
+  periodSeconds: 3
+  failureThreshold: 20
+
+terminationGracePeriodSeconds: 30
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+topologySpreadConstraints: []

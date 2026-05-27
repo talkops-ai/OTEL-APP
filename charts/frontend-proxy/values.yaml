@@ -1,0 +1,114 @@
+# Frontend Proxy (Envoy) configuration
+replicaCount: 1
+revisionHistoryLimit: 10
+
+image:
+  repository: ghcr.io/open-telemetry/demo
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 32Mi
+  limits:
+    cpu: 200m
+    memory: 65Mi
+
+podAnnotations:
+  resource.opentelemetry.io/service.namespace: otel-demo
+  io.opentelemetry.discovery.metrics/enabled: "true"
+  io.opentelemetry.discovery.metrics/scraper: httpcheck
+  io.opentelemetry.discovery.metrics/config: |
+    targets:
+      - endpoint: "http://`endpoint`"
+
+securityContext:
+  runAsUser: 101    # envoy
+  runAsGroup: 101
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false  # Envoy generates envoy.yaml at startup
+  capabilities:
+    drop:
+      - ALL
+
+podSecurityContext:
+  fsGroup: 101
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: service
+  initialDelaySeconds: 10
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: service
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+startupProbe:
+  httpGet:
+    path: /
+    port: service
+  initialDelaySeconds: 3
+  periodSeconds: 3
+  failureThreshold: 20
+
+terminationGracePeriodSeconds: 30
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+topologySpreadConstraints: []
+
+# OpenTelemetry configuration (disabled by default — enable when collector is ready)
+otel:
+  enabled: false
+  collectorName: otel-collector
+  resourceAttributes: "service.namespace=otel-demo"
+
+# Envoy configuration
+envoy:
+  adminPort: 10000
+
+# Service dependencies
+dependencies:
+  frontend:
+    host: frontend
+    port: "8080"
+  grafana:
+    host: grafana
+    port: "80"
+  loadGenerator:
+    host: load-generator
+    port: "8089"
+  imageProvider:
+    host: image-provider
+    port: "8081"
+  jaeger:
+    host: jaeger
+    port: "16686"
+  flagd:
+    host: flagd
+    port: "8013"
+    uiHost: flagd
+    uiPort: "4000"

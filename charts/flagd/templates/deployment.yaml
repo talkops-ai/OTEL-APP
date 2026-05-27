@@ -1,0 +1,155 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "flagd.fullname" . }}
+  labels:
+    {{- include "flagd.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      {{- include "flagd.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "flagd.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "flagd.serviceAccountName" . }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+        - name: init-config
+          image: busybox
+          command:
+            - sh
+            - -c
+            - "cp /config-ro/demo.flagd.json /config-rw/demo.flagd.json && cat /config-rw/demo.flagd.json"
+          volumeMounts:
+            - mountPath: /config-ro
+              name: config-ro
+            - mountPath: /config-rw
+              name: config-rw
+      containers:
+        - name: flagd
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /flagd-build
+            - start
+            - --port
+            - {{ .Values.service.rpcPort | quote }}
+            - --ofrep-port
+            - {{ .Values.service.ofrepPort | quote }}
+            - --uri
+            - file:./etc/flagd/demo.flagd.json
+          ports:
+            - containerPort: {{ .Values.service.rpcPort }}
+              name: rpc
+              protocol: TCP
+            - containerPort: {{ .Values.service.ofrepPort }}
+              name: ofrep
+              protocol: TCP
+          env:
+            - name: GOMEMLIMIT
+              value: {{ .Values.goMemLimit | quote }}
+            {{- if .Values.otel.enabled }}
+            - name: OTEL_SERVICE_NAME
+              value: flagd
+            - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+              value: cumulative
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: {{ .Values.otel.resourceAttributes | quote }}
+            - name: FLAGD_METRICS_EXPORTER
+              value: otel
+            - name: FLAGD_OTEL_COLLECTOR_URI
+              value: "{{ .Values.otel.collectorName }}:4317"
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: config-rw
+              mountPath: /etc/flagd
+        {{- if .Values.flagdUI.enabled }}
+        - name: flagd-ui
+          image: "{{ .Values.flagdUI.image.repository }}:{{ .Values.flagdUI.image.tag }}"
+          imagePullPolicy: {{ .Values.flagdUI.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.flagdUI.port }}
+              name: flagd-ui
+              protocol: TCP
+          env:
+            - name: FLAGD_UI_PORT
+              value: {{ .Values.flagdUI.port | quote }}
+            - name: SECRET_KEY_BASE
+              value: {{ .Values.flagdUI.secretKeyBase | quote }}
+            - name: PHX_HOST
+              value: {{ .Values.flagdUI.phxHost | quote }}
+            {{- if .Values.otel.enabled }}
+            - name: OTEL_SERVICE_NAME
+              value: flagd-ui
+            - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+              value: cumulative
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: {{ .Values.otel.resourceAttributes | quote }}
+            - name: FLAGD_METRICS_EXPORTER
+              value: otel
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://{{ .Values.otel.collectorName }}:4318"
+            {{- end }}
+          resources:
+            {{- toYaml .Values.flagdUI.resources | nindent 12 }}
+          volumeMounts:
+            - name: config-rw
+              mountPath: /app/data
+        {{- end }}
+      volumes:
+        - name: config-ro
+          configMap:
+            name: {{ include "flagd.fullname" . }}-config
+        - name: config-rw
+          emptyDir: {}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

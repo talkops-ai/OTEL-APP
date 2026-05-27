@@ -1,0 +1,19 @@
+{{- $fullName := include "flagd.fullname" . -}}
+🎉 {{ .Chart.Name }} has been deployed!
+
+📋 Release: {{ .Release.Name }}
+📦 Version: {{ .Chart.AppVersion }}
+🏷️  Namespace: {{ .Release.Namespace }}
+
+🔌 Service endpoints:
+   gRPC (flag eval): {{ $fullName }}:{{ .Values.service.rpcPort }}
+   OFREP API:        {{ $fullName }}:{{ .Values.service.ofrepPort }}
+{{- if .Values.flagdUI.enabled }}
+   Flagd UI:         {{ $fullName }}:{{ .Values.flagdUI.port }}
+{{- end }}
+
+To verify the deployment:
+  kubectl get pods -l "app.kubernetes.io/name={{ include "flagd.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -n {{ .Release.Namespace }}
+
+To check logs:
+  kubectl logs -l "app.kubernetes.io/name={{ include "flagd.name" . }}" -n {{ .Release.Namespace }} -f

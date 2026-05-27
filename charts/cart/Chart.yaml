@@ -1,0 +1,14 @@
+apiVersion: v2
+type: application
+name: cart
+version: 0.1.0
+appVersion: "2.2.0"
+description: OTel Demo Cart Service - C#/.NET shopping cart service
+home: https://github.com/open-telemetry/opentelemetry-demo
+sources:
+  - https://github.com/open-telemetry/opentelemetry-demo
+keywords:
+  - opentelemetry
+  - demo
+  - cart
+  - dotnet

@@ -1,0 +1,84 @@
+# Payment Service configuration
+replicaCount: 1
+revisionHistoryLimit: 10
+
+image:
+  repository: ghcr.io/open-telemetry/demo
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 140Mi
+
+podAnnotations:
+  resource.opentelemetry.io/service.namespace: otel-demo
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false  # Node.js needs writable fs
+  capabilities:
+    drop:
+      - ALL
+
+podSecurityContext:
+  fsGroup: 1000
+
+livenessProbe:
+  grpc:
+    port: 8080
+  initialDelaySeconds: 10
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  grpc:
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+startupProbe:
+  grpc:
+    port: 8080
+  initialDelaySeconds: 3
+  periodSeconds: 3
+  failureThreshold: 20
+
+terminationGracePeriodSeconds: 30
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+topologySpreadConstraints: []
+
+otel:
+  enabled: false
+  collectorName: otel-collector
+  exporterEndpoint: ""
+  resourceAttributes: "service.namespace=otel-demo"
+
+dependencies:
+  flagd:
+    host: flagd
+    port: "8013"

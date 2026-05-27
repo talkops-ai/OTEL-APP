@@ -1,0 +1,117 @@
+# PostgreSQL configuration
+replicaCount: 1
+revisionHistoryLimit: 10
+
+image:
+  repository: postgres
+  tag: "17.6"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+service:
+  type: ClusterIP
+  port: 5432
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+
+podAnnotations:
+  resource.opentelemetry.io/service.namespace: otel-demo
+  io.opentelemetry.discovery.metrics/enabled: "true"
+  io.opentelemetry.discovery.metrics/scraper: postgresql
+  io.opentelemetry.discovery.metrics/config: |
+    username: root
+    password: otel
+    metrics:
+      postgresql.blks_hit:
+        enabled: true
+      postgresql.blks_read:
+        enabled: true
+      postgresql.tup_fetched:
+        enabled: true
+      postgresql.tup_returned:
+        enabled: true
+      postgresql.tup_inserted:
+        enabled: true
+      postgresql.tup_updated:
+        enabled: true
+      postgresql.tup_deleted:
+        enabled: true
+      postgresql.deadlocks:
+        enabled: true
+    tls:
+      insecure: true
+
+# PostgreSQL runs as root initially, then drops to UID 999 (postgres) via gosu.
+# The official image manages its own privilege model — do NOT restrict with
+# runAsNonRoot, runAsUser, or allowPrivilegeEscalation: false (gosu needs it).
+securityContext: {}
+
+podSecurityContext:
+  fsGroup: 999
+
+livenessProbe:
+  exec:
+    command:
+      - pg_isready
+      - -U
+      - root
+      - -d
+      - otel
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  exec:
+    command:
+      - pg_isready
+      - -U
+      - root
+      - -d
+      - otel
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+startupProbe:
+  exec:
+    command:
+      - pg_isready
+      - -U
+      - root
+      - -d
+      - otel
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  failureThreshold: 30
+
+terminationGracePeriodSeconds: 60
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+topologySpreadConstraints: []
+
+# PostgreSQL credentials
+postgres:
+  user: root
+  password: otel
+  database: otel
+
+# Include init.sql ConfigMap for database schema initialization
+initdb:
+  enabled: true

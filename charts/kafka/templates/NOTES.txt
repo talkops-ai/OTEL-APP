@@ -1,0 +1,16 @@
+{{- $fullName := include "kafka.fullname" . -}}
+🎉 {{ .Chart.Name }} has been deployed!
+
+📋 Release: {{ .Release.Name }}
+📦 Version: {{ .Chart.AppVersion }}
+🏷️  Namespace: {{ .Release.Namespace }}
+
+🔌 Service endpoints:
+   Plaintext: {{ $fullName }}:{{ .Values.service.plaintextPort }}
+   Controller: {{ $fullName }}:{{ .Values.service.controllerPort }}
+
+To verify the deployment:
+  kubectl get pods -l "app.kubernetes.io/name={{ include "kafka.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -n {{ .Release.Namespace }}
+
+To check logs:
+  kubectl logs -l "app.kubernetes.io/name={{ include "kafka.name" . }}" -n {{ .Release.Namespace }} -f

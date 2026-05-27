@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "frontend.fullname" . }}
+  labels:
+    {{- include "frontend.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      {{- include "frontend.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "frontend.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "frontend.serviceAccountName" . }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: frontend
+          image: {{ include "frontend.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+              name: service
+              protocol: TCP
+          env:
+            - name: FRONTEND_PORT
+              value: {{ .Values.service.port | quote }}
+            - name: PORT
+              value: {{ .Values.service.port | quote }}
+            - name: FRONTEND_ADDR
+              value: ":{{ .Values.service.port }}"
+            - name: AD_ADDR
+              value: "{{ .Values.dependencies.ad.host }}:{{ .Values.dependencies.ad.port }}"
+            - name: CART_ADDR
+              value: "{{ .Values.dependencies.cart.host }}:{{ .Values.dependencies.cart.port }}"
+            - name: CHECKOUT_ADDR
+              value: "{{ .Values.dependencies.checkout.host }}:{{ .Values.dependencies.checkout.port }}"
+            - name: CURRENCY_ADDR
+              value: "{{ .Values.dependencies.currency.host }}:{{ .Values.dependencies.currency.port }}"
+            - name: PRODUCT_CATALOG_ADDR
+              value: "{{ .Values.dependencies.productCatalog.host }}:{{ .Values.dependencies.productCatalog.port }}"
+            - name: PRODUCT_REVIEWS_ADDR
+              value: "{{ .Values.dependencies.productReviews.host }}:{{ .Values.dependencies.productReviews.port }}"
+            - name: RECOMMENDATION_ADDR
+              value: "{{ .Values.dependencies.recommendation.host }}:{{ .Values.dependencies.recommendation.port }}"
+            - name: SHIPPING_ADDR
+              value: "http://{{ .Values.dependencies.shipping.host }}:{{ .Values.dependencies.shipping.port }}"
+            - name: FLAGD_HOST
+              value: {{ .Values.dependencies.flagd.host | quote }}
+            - name: FLAGD_PORT
+              value: {{ .Values.dependencies.flagd.port | quote }}
+            - name: ENV_PLATFORM
+              value: kubernetes
+            - name: OTEL_SERVICE_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: "metadata.labels['app.kubernetes.io/component']"
+            {{- if .Values.otel.enabled }}
+            - name: OTEL_COLLECTOR_NAME
+              value: {{ .Values.otel.collectorName | quote }}
+            - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+              value: cumulative
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: {{ .Values.otel.resourceAttributes | quote }}
+            - name: OTEL_COLLECTOR_HOST
+              value: {{ .Values.otel.collectorName | quote }}
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ include "frontend.otelEndpoint" . }}
+            - name: WEB_OTEL_SERVICE_NAME
+              value: frontend-web
+            - name: PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+              value: {{ .Values.otel.publicOtlpTracesEndpoint | quote }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

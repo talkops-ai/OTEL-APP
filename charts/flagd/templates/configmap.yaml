@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "flagd.fullname" . }}-config
+  labels:
+    {{- include "flagd.labels" . | nindent 4 }}
+data:
+  demo.flagd.json: |
+    {{- .Files.Get "files/demo.flagd.json" | nindent 4 }}

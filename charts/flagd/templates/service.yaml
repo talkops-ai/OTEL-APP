@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "flagd.fullname" . }}
+  labels:
+    {{- include "flagd.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.rpcPort }}
+      targetPort: {{ .Values.service.rpcPort }}
+      name: rpc
+    - port: {{ .Values.service.ofrepPort }}
+      targetPort: {{ .Values.service.ofrepPort }}
+      name: ofrep
+    {{- if .Values.flagdUI.enabled }}
+    - port: {{ .Values.flagdUI.port }}
+      targetPort: {{ .Values.flagdUI.port }}
+      name: flagd-ui
+    {{- end }}
+  selector:
+    {{- include "flagd.selectorLabels" . | nindent 4 }}

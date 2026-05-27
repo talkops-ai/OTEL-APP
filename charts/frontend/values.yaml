@@ -1,0 +1,115 @@
+# Frontend Service configuration
+replicaCount: 1
+revisionHistoryLimit: 10
+
+image:
+  repository: ghcr.io/open-telemetry/demo
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 150Mi
+  limits:
+    cpu: 500m
+    memory: 250Mi
+
+podAnnotations:
+  resource.opentelemetry.io/service.namespace: otel-demo
+
+securityContext:
+  runAsUser: 1001
+  runAsGroup: 1001
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false  # Next.js needs writable .next/cache
+  capabilities:
+    drop:
+      - ALL
+
+podSecurityContext:
+  fsGroup: 1001
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: service
+  initialDelaySeconds: 20
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: service
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+startupProbe:
+  httpGet:
+    path: /
+    port: service
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  failureThreshold: 30
+
+terminationGracePeriodSeconds: 30
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+topologySpreadConstraints: []
+
+# OpenTelemetry configuration (disabled by default — enable when collector is ready)
+otel:
+  enabled: false
+  collectorName: otel-collector
+  exporterEndpoint: ""  # auto-computed (gRPC 4317)
+  resourceAttributes: "service.namespace=otel-demo"
+  # Browser-side traces endpoint (typically through port-forward)
+  publicOtlpTracesEndpoint: "http://localhost:8080/otlp-http/v1/traces"
+
+# Service dependencies
+dependencies:
+  ad:
+    host: ad
+    port: "8080"
+  cart:
+    host: cart
+    port: "8080"
+  checkout:
+    host: checkout
+    port: "8080"
+  currency:
+    host: currency
+    port: "8080"
+  productCatalog:
+    host: product-catalog
+    port: "8080"
+  productReviews:
+    host: product-reviews
+    port: "3551"
+  recommendation:
+    host: recommendation
+    port: "8080"
+  shipping:
+    host: shipping
+    port: "8080"
+  flagd:
+    host: flagd
+    port: "8013"

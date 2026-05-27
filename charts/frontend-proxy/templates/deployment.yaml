@@ -1,0 +1,128 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "frontend-proxy.fullname" . }}
+  labels:
+    {{- include "frontend-proxy.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      {{- include "frontend-proxy.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "frontend-proxy.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "frontend-proxy.serviceAccountName" . }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: frontend-proxy
+          image: {{ include "frontend-proxy.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+              name: service
+              protocol: TCP
+          env:
+            - name: ENVOY_PORT
+              value: {{ .Values.service.port | quote }}
+            - name: ENVOY_ADDR
+              value: "0.0.0.0"
+            - name: ENVOY_ADMIN_PORT
+              value: {{ .Values.envoy.adminPort | quote }}
+            - name: FRONTEND_HOST
+              value: {{ .Values.dependencies.frontend.host | quote }}
+            - name: FRONTEND_PORT
+              value: {{ .Values.dependencies.frontend.port | quote }}
+            - name: GRAFANA_HOST
+              value: {{ .Values.dependencies.grafana.host | quote }}
+            - name: GRAFANA_PORT
+              value: {{ .Values.dependencies.grafana.port | quote }}
+            - name: LOCUST_WEB_HOST
+              value: {{ .Values.dependencies.loadGenerator.host | quote }}
+            - name: LOCUST_WEB_PORT
+              value: {{ .Values.dependencies.loadGenerator.port | quote }}
+            - name: IMAGE_PROVIDER_HOST
+              value: {{ .Values.dependencies.imageProvider.host | quote }}
+            - name: IMAGE_PROVIDER_PORT
+              value: {{ .Values.dependencies.imageProvider.port | quote }}
+            - name: JAEGER_HOST
+              value: {{ .Values.dependencies.jaeger.host | quote }}
+            - name: JAEGER_UI_PORT
+              value: {{ .Values.dependencies.jaeger.port | quote }}
+            - name: OTEL_COLLECTOR_HOST
+              value: {{ .Values.otel.collectorName | quote }}
+            - name: OTEL_COLLECTOR_PORT_GRPC
+              value: "4317"
+            - name: OTEL_COLLECTOR_PORT_HTTP
+              value: "4318"
+            - name: FLAGD_HOST
+              value: {{ .Values.dependencies.flagd.host | quote }}
+            - name: FLAGD_PORT
+              value: {{ .Values.dependencies.flagd.port | quote }}
+            - name: FLAGD_UI_HOST
+              value: {{ .Values.dependencies.flagd.uiHost | quote }}
+            - name: FLAGD_UI_PORT
+              value: {{ .Values.dependencies.flagd.uiPort | quote }}
+            {{- if .Values.otel.enabled }}
+            - name: OTEL_SERVICE_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: "metadata.labels['app.kubernetes.io/component']"
+            - name: OTEL_COLLECTOR_NAME
+              value: {{ .Values.otel.collectorName | quote }}
+            - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+              value: cumulative
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: {{ .Values.otel.resourceAttributes | quote }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

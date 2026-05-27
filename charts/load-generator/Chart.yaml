@@ -1,0 +1,14 @@
+apiVersion: v2
+type: application
+name: load-generator
+version: 0.1.0
+appVersion: "2.2.0"
+description: OTel Demo Load Generator - Python/Locust traffic generator
+home: https://github.com/open-telemetry/opentelemetry-demo
+sources:
+  - https://github.com/open-telemetry/opentelemetry-demo
+keywords:
+  - opentelemetry
+  - demo
+  - load-generator
+  - locust

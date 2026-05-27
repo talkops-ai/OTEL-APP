@@ -1,0 +1,8 @@
+🎉 {{ include "payment.fullname" . }} has been deployed!
+
+📋 Release: {{ .Release.Name }}
+📦 Version: {{ .Chart.AppVersion }}
+🏷️  Namespace: {{ .Release.Namespace }}
+
+🔌 Service endpoint:
+   {{ include "payment.fullname" . }}:{{ .Values.service.port }}

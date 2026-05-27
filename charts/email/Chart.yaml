@@ -1,0 +1,13 @@
+apiVersion: v2
+type: application
+name: email
+version: 0.1.0
+appVersion: "2.2.0"
+description: OTel Demo Email Service - Ruby email sender
+home: https://github.com/open-telemetry/opentelemetry-demo
+sources:
+  - https://github.com/open-telemetry/opentelemetry-demo
+keywords:
+  - opentelemetry
+  - demo
+  - email

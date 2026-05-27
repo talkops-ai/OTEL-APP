@@ -1,0 +1,14 @@
+apiVersion: v2
+type: application
+name: frontend
+version: 0.1.0
+appVersion: "2.2.0"
+description: OTel Demo Frontend Service - Next.js web storefront
+home: https://github.com/open-telemetry/opentelemetry-demo
+sources:
+  - https://github.com/open-telemetry/opentelemetry-demo
+keywords:
+  - opentelemetry
+  - demo
+  - frontend
+  - nextjs
