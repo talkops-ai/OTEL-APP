@@ -15,8 +15,8 @@ serviceAccount:
   name: ""
 
 service:
-  type: ClusterIP
-  port: 8080
+  type: LoadBalancer
+  port: 8090
 
 resources:
   requests:
@@ -82,9 +82,11 @@ topologySpreadConstraints: []
 
 # OpenTelemetry configuration (disabled by default — enable when collector is ready)
 otel:
-  enabled: false
-  collectorName: otel-collector
+  enabled: true
+  collectorName: otel-demo-collector-collector.otel-demo
   resourceAttributes: "service.namespace=otel-demo"
+  logsExporter: "otlp"
+  logsProtocol: "http/protobuf"
 
 # Envoy configuration
 envoy:

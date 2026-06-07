@@ -24,7 +24,7 @@ resources:
     memory: 500Mi
   limits:
     cpu: "1"
-    memory: 1500Mi
+    memory: 2500Mi
 
 podAnnotations:
   resource.opentelemetry.io/service.namespace: otel-demo
@@ -77,10 +77,13 @@ topologySpreadConstraints: []
 
 # OpenTelemetry configuration (disabled by default — enable when collector is ready)
 otel:
-  enabled: false
-  collectorName: otel-collector
-  exporterEndpoint: ""  # auto-computed (gRPC 4317)
+  enabled: true
+  collectorName: otel-demo-collector-collector.otel-demo
+  exporterEndpoint: "http://otel-demo-collector-collector.otel-demo:4318"
   resourceAttributes: "service.namespace=otel-demo"
+  logsExporter: "otlp"
+  logsProtocol: "http/protobuf"
+  pythonLoggingAutoInstrumentation: "true"
 
 # Locust settings
 locust:

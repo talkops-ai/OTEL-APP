@@ -77,6 +77,12 @@ spec:
               value: {{ .Values.otel.resourceAttributes | quote }}
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: {{ include "load-generator.otelEndpoint" . }}
+            - name: OTEL_LOGS_EXPORTER
+              value: {{ .Values.otel.logsExporter | quote }}
+            - name: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL
+              value: {{ .Values.otel.logsProtocol | quote }}
+            - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+              value: {{ .Values.otel.pythonLoggingAutoInstrumentation | quote }}
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

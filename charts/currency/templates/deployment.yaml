@@ -55,6 +55,12 @@ spec:
               value: {{ .Values.otel.collectorName | quote }}
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: {{ include "currency.otelEndpoint" . }}
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: {{ .Values.otel.exporterProtocol | quote }}
+            - name: OTEL_LOGS_EXPORTER
+              value: {{ .Values.otel.logsExporter | quote }}
+            - name: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL
+              value: {{ .Values.otel.logsProtocol | quote }}
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

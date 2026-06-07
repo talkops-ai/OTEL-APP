@@ -226,6 +226,23 @@ Depends on all backend and mid-tier services.
 
 ---
 
+## Installing from Helm Repository
+
+Instead of cloning the repository locally, you can add the Helm repository and install charts directly. Assuming the charts are published (e.g., via GitHub Pages), you can add the repository like this:
+
+```bash
+# Add the TalkOps Helm repository
+helm repo add talkops https://talkops-ai.github.io/OTEL-APP
+helm repo update
+
+# Example: Install the ad service chart from the repository
+helm install ad talkops/ad -n otel-demo --create-namespace
+```
+
+> **Note**: To install from the remote repository, simply replace the local path `charts/<service>/` with `talkops/<service>` in the installation commands below.
+
+---
+
 ## Quick Start — Full Deployment
 
 ```bash

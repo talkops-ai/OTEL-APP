@@ -60,7 +60,9 @@ spec:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: {{ include "ad.otelEndpoint" . }}
             - name: OTEL_LOGS_EXPORTER
-              value: otlp
+              value: {{ .Values.otel.logsExporter | quote }}
+            - name: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL
+              value: {{ .Values.otel.logsProtocol | quote }}
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
