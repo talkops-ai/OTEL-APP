@@ -1,7 +1,7 @@
 apiVersion: v2
 type: application
 name: payment
-version: 0.1.0
+version: 0.1.1
 appVersion: "2.2.0"
 description: OTel Demo Payment Service - JavaScript payment processing
 home: https://github.com/open-telemetry/opentelemetry-demo

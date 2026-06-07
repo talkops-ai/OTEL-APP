@@ -1,7 +1,7 @@
 apiVersion: v2
 type: application
 name: valkey-cart
-version: 0.1.0
+version: 0.1.1
 appVersion: "9.0.1"
 description: OTel Demo Valkey Cart - Redis-compatible in-memory store for the cart service
 home: https://github.com/open-telemetry/opentelemetry-demo

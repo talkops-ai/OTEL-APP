@@ -1,7 +1,7 @@
 apiVersion: v2
 type: application
 name: postgresql
-version: 0.1.0
+version: 0.1.1
 appVersion: "17.6"
 description: OTel Demo PostgreSQL - Database backend for product-catalog and product-reviews
 home: https://github.com/open-telemetry/opentelemetry-demo

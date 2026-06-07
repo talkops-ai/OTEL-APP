@@ -1,7 +1,7 @@
 apiVersion: v2
 type: application
 name: ad
-version: 0.1.0
+version: 0.1.1
 appVersion: "2.2.0"
 description: OTel Demo Ad Service - Java-based advertisement service
 home: https://github.com/open-telemetry/opentelemetry-demo
