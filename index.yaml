@@ -1,0 +1,343 @@
+apiVersion: v1
+entries:
+  ad:
+  - apiVersion: v2
+    appVersion: 2.2.0
+    created: "2026-06-07T15:00:23.027526306Z"
+    description: OTel Demo Ad Service - Java-based advertisement service
+    digest: 85685d9c230a89f23362c2a41d21a655b22f3efa9db50c9f2d43e9c8d891fa09
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - ad
+    - java
+    name: ad
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/ad-0.1.1/ad-0.1.1.tgz
+    version: 0.1.1
+  cart:
+  - apiVersion: v2
+    appVersion: 2.2.0
+    created: "2026-06-07T15:00:23.173860162Z"
+    description: OTel Demo Cart Service - C#/.NET shopping cart service
+    digest: 9bd0fe562d8976898f993f24ddc0d13063d40e5f17f09197b4caf1ff668a27f6
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - cart
+    - dotnet
+    name: cart
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/cart-0.1.1/cart-0.1.1.tgz
+    version: 0.1.1
+  checkout:
+  - apiVersion: v2
+    appVersion: 2.2.0
+    created: "2026-06-07T15:00:23.344766381Z"
+    description: OTel Demo Checkout Service - Go order processing
+    digest: 5e0347aab22659d30f81c590cb8669a439042d4f51f4d9b2ac842cd3c9a1a305
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - checkout
+    name: checkout
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/checkout-0.1.1/checkout-0.1.1.tgz
+    version: 0.1.1
+  currency:
+  - apiVersion: v2
+    appVersion: 2.2.0
+    created: "2026-06-07T15:00:23.493931751Z"
+    description: OTel Demo Currency Service - C++ currency conversion
+    digest: df7bf0ca0677c2598ae1f1ce9157333c2f1441488f305d71451a3c8ca7063a92
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - currency
+    name: currency
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/currency-0.1.1/currency-0.1.1.tgz
+    version: 0.1.1
+  email:
+  - apiVersion: v2
+    appVersion: 2.2.0
+    created: "2026-06-07T15:00:23.632743316Z"
+    description: OTel Demo Email Service - Ruby email sender
+    digest: 481788f7bd76260da60d397ac4b6029bbf505d5f1343ee2d22e5dbe375634cc3
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - email
+    name: email
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/email-0.1.1/email-0.1.1.tgz
+    version: 0.1.1
+  flagd:
+  - apiVersion: v2
+    appVersion: 0.12.9
+    created: "2026-06-07T15:00:23.786285509Z"
+    description: OTel Demo Flagd - OpenFeature-compatible feature flag service
+    digest: 56c62d34a6ad294f00596db6bb42959111161808bb9330370f1803ede380eb7c
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - flagd
+    - feature-flags
+    - openfeature
+    name: flagd
+    sources:
+    - https://github.com/open-feature/flagd
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/flagd-0.1.1/flagd-0.1.1.tgz
+    version: 0.1.1
+  frontend:
+  - apiVersion: v2
+    appVersion: 2.2.0
+    created: "2026-06-07T15:00:23.957071376Z"
+    description: OTel Demo Frontend Service - Next.js web storefront
+    digest: caaa2acaeb7b9ae9a3945832044b8586fe450eca539892bd5f70ad82b03aee5b
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - frontend
+    - nextjs
+    name: frontend
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/frontend-0.1.1/frontend-0.1.1.tgz
+    version: 0.1.1
+  frontend-proxy:
+  - apiVersion: v2
+    appVersion: 2.2.0
+    created: "2026-06-07T15:00:24.102850707Z"
+    description: OTel Demo Frontend Proxy - Envoy-based reverse proxy
+    digest: ff18f57285a5ed93a495e4f94a7a99a5ed97b112570ffd7174029f902f070985
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - frontend-proxy
+    - envoy
+    name: frontend-proxy
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/frontend-proxy-0.1.1/frontend-proxy-0.1.1.tgz
+    version: 0.1.1
+  image-provider:
+  - apiVersion: v2
+    appVersion: 2.2.0
+    created: "2026-06-07T15:00:24.269411462Z"
+    description: OTel Demo Image Provider - serves product images
+    digest: 93227b594afe76a60ff58a80bf529e403d861a446180967cb9efcacfdf09493e
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - image-provider
+    name: image-provider
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/image-provider-0.1.1/image-provider-0.1.1.tgz
+    version: 0.1.1
+  kafka:
+  - apiVersion: v2
+    appVersion: 2.2.0
+    created: "2026-06-07T15:00:24.418885643Z"
+    description: OTel Demo Kafka - Single-node KRaft-mode message broker
+    digest: 5aa681b70d9ec01e4ba600fe53ffcc0de320ce43b9a7ca7e42a4f0116bcd0d38
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - kafka
+    - kraft
+    - messaging
+    name: kafka
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/kafka-0.1.1/kafka-0.1.1.tgz
+    version: 0.1.1
+  load-generator:
+  - apiVersion: v2
+    appVersion: 2.2.0
+    created: "2026-06-07T15:00:24.578854573Z"
+    description: OTel Demo Load Generator - Python/Locust traffic generator
+    digest: c36a731a1bbe953a4379179e6a8695c108e4686a7f0bf408d006d8514142293b
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - load-generator
+    - locust
+    name: load-generator
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/load-generator-0.1.1/load-generator-0.1.1.tgz
+    version: 0.1.1
+  payment:
+  - apiVersion: v2
+    appVersion: 2.2.0
+    created: "2026-06-07T15:00:24.735364402Z"
+    description: OTel Demo Payment Service - JavaScript payment processing
+    digest: f4ba697a71ec648bfdc3442ac23186beccc858aeed00a8f82c3c55de0217fd98
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - payment
+    name: payment
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/payment-0.1.1/payment-0.1.1.tgz
+    version: 0.1.1
+  postgresql:
+  - apiVersion: v2
+    appVersion: "17.6"
+    created: "2026-06-07T15:00:24.902734958Z"
+    description: OTel Demo PostgreSQL - Database backend for product-catalog and product-reviews
+    digest: 1f2820c192ab3d8ef1a6f56f0cda082f460b41164ebb8fc50d92a2c422e5ab30
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - postgresql
+    - database
+    name: postgresql
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/postgresql-0.1.1/postgresql-0.1.1.tgz
+    version: 0.1.1
+  product-catalog:
+  - apiVersion: v2
+    appVersion: 2.2.0
+    created: "2026-06-07T15:00:25.062468246Z"
+    description: OTel Demo Product Catalog Service - Go-based product listing service
+    digest: 548a9e1bdba70aae3b3438242098cde31327eb4f0c73893c3f9e83d30c6c6e44
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - product-catalog
+    - go
+    name: product-catalog
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/product-catalog-0.1.1/product-catalog-0.1.1.tgz
+    version: 0.1.1
+  quote:
+  - apiVersion: v2
+    appVersion: 2.2.0
+    created: "2026-06-07T15:00:25.222572674Z"
+    description: OTel Demo Quote Service - PHP shipping quote
+    digest: a07e73d83936fb1a86e098e51ccc4efaf7d3533c4a939a8d939249aae98f4330
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - quote
+    name: quote
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/quote-0.1.1/quote-0.1.1.tgz
+    version: 0.1.1
+  recommendation:
+  - apiVersion: v2
+    appVersion: 2.2.0
+    created: "2026-06-07T15:00:25.404217758Z"
+    description: OTel Demo Recommendation Service - Python-based product recommendation
+      engine
+    digest: 4db064768bbd3d4354994342b7bb96c572f855712cc68033e7dbfa67a7ad343c
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - recommendation
+    - python
+    name: recommendation
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/recommendation-0.1.1/recommendation-0.1.1.tgz
+    version: 0.1.1
+  shipping:
+  - apiVersion: v2
+    appVersion: 2.2.0
+    created: "2026-06-07T15:00:25.550521097Z"
+    description: OTel Demo Shipping Service - Rust shipping calculation
+    digest: bcf6bd31e17c99c854d5ceb989f2e743e1abab9aa3fe31d265e34469e4ccc8ef
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - shipping
+    name: shipping
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/shipping-0.1.1/shipping-0.1.1.tgz
+    version: 0.1.1
+  valkey-cart:
+  - apiVersion: v2
+    appVersion: 9.0.1
+    created: "2026-06-07T15:00:25.703665349Z"
+    description: OTel Demo Valkey Cart - Redis-compatible in-memory store for the
+      cart service
+    digest: 2ebaec96bcf762fb5d20acbf5efccfa6d67335f2a2092f2097c8aec3c4c2c6dd
+    home: https://github.com/open-telemetry/opentelemetry-demo
+    keywords:
+    - opentelemetry
+    - demo
+    - valkey
+    - redis
+    - cart
+    name: valkey-cart
+    sources:
+    - https://github.com/open-telemetry/opentelemetry-demo
+    type: application
+    urls:
+    - https://github.com/talkops-ai/OTEL-APP/releases/download/valkey-cart-0.1.1/valkey-cart-0.1.1.tgz
+    version: 0.1.1
+generated: "2026-06-07T15:00:25.70367294Z"
