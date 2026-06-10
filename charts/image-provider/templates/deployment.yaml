@@ -37,18 +37,14 @@ spec:
           env:
             - name: IMAGE_PROVIDER_PORT
               value: {{ .Values.service.port | quote }}
+            # Overrides the Operator's default
             - name: OTEL_SERVICE_NAME
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: "metadata.labels['app.kubernetes.io/component']"
+              value: "image-provider-service"
             {{- if .Values.otel.enabled }}
             - name: OTEL_COLLECTOR_HOST
               value: {{ .Values.otel.collectorName | quote }}
             - name: OTEL_COLLECTOR_PORT_GRPC
               value: "4317"
-            - name: OTEL_RESOURCE_ATTRIBUTES
-              value: {{ .Values.otel.resourceAttributes | quote }}
             - name: OTEL_LOGS_EXPORTER
               value: {{ .Values.otel.logsExporter | quote }}
             - name: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL

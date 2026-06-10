@@ -49,18 +49,14 @@ spec:
               value: {{ .Values.dependencies.flagd.port | quote }}
             - name: PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION
               value: python
+            # Overrides the Operator's default
             - name: OTEL_SERVICE_NAME
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: "metadata.labels['app.kubernetes.io/component']"
+              value: "recommendation-service"
             {{- if .Values.otel.enabled }}
             - name: OTEL_COLLECTOR_NAME
               value: {{ .Values.otel.collectorName | quote }}
             - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
               value: cumulative
-            - name: OTEL_RESOURCE_ATTRIBUTES
-              value: {{ .Values.otel.resourceAttributes | quote }}
             - name: OTEL_PYTHON_LOG_CORRELATION
               value: "true"
             - name: OTEL_EXPORTER_OTLP_ENDPOINT

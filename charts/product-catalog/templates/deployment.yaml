@@ -49,11 +49,9 @@ spec:
               value: {{ .Values.dependencies.flagd.host | quote }}
             - name: FLAGD_PORT
               value: {{ .Values.dependencies.flagd.port | quote }}
+            # Overrides the Operator's default
             - name: OTEL_SERVICE_NAME
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: "metadata.labels['app.kubernetes.io/component']"
+              value: "product-catalog-service"
             - name: OTEL_SEMCONV_STABILITY_OPT_IN
               value: database
             {{- if .Values.otel.enabled }}
@@ -61,8 +59,6 @@ spec:
               value: {{ .Values.otel.collectorName | quote }}
             - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
               value: cumulative
-            - name: OTEL_RESOURCE_ATTRIBUTES
-              value: {{ .Values.otel.resourceAttributes | quote }}
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: {{ include "product-catalog.otelEndpoint" . }}
             - name: OTEL_EXPORTER_OTLP_PROTOCOL

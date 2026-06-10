@@ -53,17 +53,13 @@ spec:
             - name: KAFKA_CONTROLLER_QUORUM_VOTERS
               value: "1@{{ include "kafka.fullname" . }}:{{ .Values.service.controllerPort }}"
             {{- if .Values.otel.enabled }}
+            # Overrides the Operator's default
             - name: OTEL_SERVICE_NAME
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: "metadata.labels['app.kubernetes.io/component']"
+              value: "kafka-service"
             - name: OTEL_COLLECTOR_NAME
               value: {{ .Values.otel.collectorName | quote }}
             - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
               value: cumulative
-            - name: OTEL_RESOURCE_ATTRIBUTES
-              value: {{ .Values.otel.resourceAttributes | quote }}
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: {{ include "kafka.otelEndpoint" . }}
             {{- end }}

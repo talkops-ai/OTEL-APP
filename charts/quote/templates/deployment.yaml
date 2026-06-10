@@ -39,11 +39,9 @@ spec:
               value: {{ .Values.service.port | quote }}
             - name: IPV6_ENABLED
               value: "false"
+            # Overrides the Operator's default
             - name: OTEL_SERVICE_NAME
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: "metadata.labels['app.kubernetes.io/component']"
+              value: "quote-service"
             {{- if .Values.otel.enabled }}
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: {{ include "quote.otelEndpoint" . }}
@@ -53,8 +51,6 @@ spec:
               value: "true"
             - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
               value: cumulative
-            - name: OTEL_RESOURCE_ATTRIBUTES
-              value: {{ .Values.otel.resourceAttributes | quote }}
             - name: OTEL_LOGS_EXPORTER
               value: {{ .Values.otel.logsExporter | quote }}
             - name: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL

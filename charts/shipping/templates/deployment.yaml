@@ -45,11 +45,9 @@ spec:
               value: {{ .Values.dependencies.flagd.host | quote }}
             - name: FLAGD_PORT
               value: {{ .Values.dependencies.flagd.port | quote }}
+            # Overrides the Operator's default
             - name: OTEL_SERVICE_NAME
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: "metadata.labels['app.kubernetes.io/component']"
+              value: "shipping-service"
             {{- if .Values.otel.enabled }}
             - name: OTEL_COLLECTOR_NAME
               value: {{ .Values.otel.collectorName | quote }}
@@ -59,8 +57,6 @@ spec:
               value: {{ .Values.otel.exporterProtocol | quote }}
             - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
               value: cumulative
-            - name: OTEL_RESOURCE_ATTRIBUTES
-              value: {{ .Values.otel.resourceAttributes | quote }}
             - name: OTEL_LOGS_EXPORTER
               value: {{ .Values.otel.logsExporter | quote }}
             - name: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL

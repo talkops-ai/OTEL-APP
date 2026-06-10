@@ -45,11 +45,9 @@ spec:
               value: "false"
             - name: VERSION
               value: {{ .Chart.AppVersion | quote }}
+            # Overrides the Operator's default
             - name: OTEL_SERVICE_NAME
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: "metadata.labels['app.kubernetes.io/component']"
+              value: "currency-service"
             {{- if .Values.otel.enabled }}
             - name: OTEL_COLLECTOR_NAME
               value: {{ .Values.otel.collectorName | quote }}
