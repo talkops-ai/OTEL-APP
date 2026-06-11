@@ -4,7 +4,7 @@ revisionHistoryLimit: 10
 
 image:
   repository: ghcr.io/open-telemetry/demo
-  tag: ""
+  tag: "2.0.2-load-generator"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -78,8 +78,8 @@ topologySpreadConstraints: []
 # OpenTelemetry configuration (disabled by default — enable when collector is ready)
 otel:
   enabled: true
-  collectorName: otel-demo-collector-collector.otel-demo
-  exporterEndpoint: "http://otel-demo-collector-collector.otel-demo:4318"
+  collectorName: otel-demo-collector-collector.otel-demo.svc.cluster.local
+  exporterEndpoint: "http://otel-demo-collector-collector.otel-demo.svc.cluster.local:4318"
   resourceAttributes: "service.namespace=otel-demo"
   logsExporter: "otlp"
   logsProtocol: "http/protobuf"

@@ -74,8 +74,8 @@ topologySpreadConstraints: []
 
 otel:
   enabled: true
-  collectorName: otel-demo-collector-collector.otel-demo
-  exporterEndpoint: "http://otel-demo-collector-collector.otel-demo:4318"
+  collectorName: otel-demo-collector-collector.otel-demo.svc.cluster.local
+  exporterEndpoint: "http://otel-demo-collector-collector.otel-demo.svc.cluster.local:4318"
   resourceAttributes: "service.namespace=otel-demo"
   logsExporter: "otlp"
   logsProtocol: "http/protobuf"
