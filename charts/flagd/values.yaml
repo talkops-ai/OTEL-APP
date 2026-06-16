@@ -97,7 +97,7 @@ topologySpreadConstraints: []
 # OpenTelemetry configuration (disabled by default — enable when collector is ready)
 otel:
   enabled: false
-  collectorName: opentelemetry-otel.otel-demo.svc.cluster.local
+  collectorName: opentelemetry-otel-collector.otel-demo.svc.cluster.local
   resourceAttributes: "service.namespace=otel-demo"
 
 # Go memory limit

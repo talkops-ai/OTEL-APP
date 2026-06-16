@@ -80,8 +80,8 @@ topologySpreadConstraints: []
 # OpenTelemetry configuration (disabled by default — enable when collector is ready)
 otel:
   enabled: true
-  collectorName: opentelemetry-otel.otel-demo.svc.cluster.local
-  exporterEndpoint: "http://opentelemetry-otel.otel-demo.svc.cluster.local:4318"
+  collectorName: opentelemetry-otel-collector.otel-demo.svc.cluster.local
+  exporterEndpoint: "http://opentelemetry-otel-collector.otel-demo.svc.cluster.local:4318"
   resourceAttributes: "service.namespace=otel-demo"
   logsExporter: "otlp"
   logsProtocol: "http/protobuf"
