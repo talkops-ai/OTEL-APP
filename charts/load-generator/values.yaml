@@ -4,7 +4,7 @@ revisionHistoryLimit: 10
 
 image:
   repository: ghcr.io/open-telemetry/demo
-  tag: ""
+  tag: "2.0.2-load-generator"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -83,14 +83,14 @@ otel:
   resourceAttributes: "service.namespace=otel-demo"
   logsExporter: "otlp"
   logsProtocol: "http/protobuf"
-  pythonLoggingAutoInstrumentation: "true"
+  pythonLoggingAutoInstrumentation: "false"
 
 # Locust settings
 locust:
   users: "10"
   spawnRate: "1"
   headless: "false"
-  autostart: "false"
+  autostart: "true"
   browserTrafficEnabled: "true"
 
 # Service dependencies
