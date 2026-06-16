@@ -87,10 +87,10 @@ otel:
 
 # Locust settings
 locust:
-  users: "10"
+  users: "4"
   spawnRate: "1"
   headless: "false"
-  autostart: "true"
+  autostart: "false"
   browserTrafficEnabled: "false"
 
 # Service dependencies
