@@ -74,8 +74,8 @@ topologySpreadConstraints: []
 
 otel:
   enabled: true
-  collectorName: otel-demo-collector-collector.otel-demo.svc.cluster.local
-  exporterEndpoint: "http://otel-demo-collector-collector.otel-demo.svc.cluster.local:4317"
+  collectorName: opentelemetry-otel.otel-demo.svc.cluster.local
+  exporterEndpoint: "http://opentelemetry-otel.otel-demo.svc.cluster.local:4318"
   exporterProtocol: "grpc"
   resourceAttributes: "service.namespace=otel-demo"
   logsExporter: "otlp"
