@@ -77,7 +77,7 @@ topologySpreadConstraints: []
 
 # OpenTelemetry configuration (disabled by default — enable when collector is ready)
 otel:
-  enabled: true
+  enabled: false
   collectorName: otel-demo-collector-collector.otel-demo.svc.cluster.local
   exporterEndpoint: "http://otel-demo-collector-collector.otel-demo.svc.cluster.local:4318"
   resourceAttributes: "service.namespace=otel-demo"
