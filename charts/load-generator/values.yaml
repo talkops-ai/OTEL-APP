@@ -97,7 +97,7 @@ locust:
 dependencies:
   frontendProxy:
     host: frontend-proxy
-    port: "8080"
+    port: "8090"
   flagd:
     host: flagd
     port: "8013"
