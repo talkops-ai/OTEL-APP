@@ -34,7 +34,7 @@ securityContext:
   runAsUser: 1000
   runAsGroup: 1000
   allowPrivilegeEscalation: false
-  readOnlyRootFilesystem: false  # Locust writes temp files
+  readOnlyRootFilesystem: false # Locust writes temp files
   capabilities:
     drop:
       - ALL
@@ -87,10 +87,10 @@ otel:
 
 # Locust settings
 locust:
-  users: "10"
+  users: "4"
   spawnRate: "1"
   headless: "false"
-  autostart: "true"
+  autostart: "false"
   browserTrafficEnabled: "true"
 
 # Service dependencies
