@@ -4,7 +4,7 @@ revisionHistoryLimit: 10
 
 image:
   repository: ghcr.io/open-telemetry/demo
-  tag: "2.0.2-load-generator"
+  tag: ""
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -20,11 +20,11 @@ service:
 
 resources:
   requests:
-    cpu: 200m
-    memory: 500Mi
+    cpu: 500m
+    memory: 1024Mi
   limits:
-    cpu: "1"
-    memory: 2500Mi
+    cpu: "2"
+    memory: 3000Mi
 
 podAnnotations:
   resource.opentelemetry.io/service.namespace: otel-demo

@@ -20,11 +20,11 @@ service:
 
 resources:
   requests:
-    cpu: 25m
-    memory: 32Mi
+    cpu: 100m
+    memory: 128Mi
   limits:
-    cpu: 200m
-    memory: 65Mi
+    cpu: 500m
+    memory: 512Mi
 
 podAnnotations:
   resource.opentelemetry.io/service.namespace: otel-demo
