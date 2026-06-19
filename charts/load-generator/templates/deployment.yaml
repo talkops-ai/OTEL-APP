@@ -63,20 +63,7 @@ spec:
               value: {{ .Values.dependencies.flagd.port | quote }}
             - name: FLAGD_OFREP_PORT
               value: {{ .Values.dependencies.flagd.ofrepPort | quote }}
-            # Overrides the Operator's default
-            - name: OTEL_SERVICE_NAME
-              value: "load-generator-service"
             {{- if .Values.otel.enabled }}
-            - name: OTEL_COLLECTOR_NAME
-              value: {{ .Values.otel.collectorName | quote }}
-            - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
-              value: cumulative
-            - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: {{ include "load-generator.otelEndpoint" . }}
-            - name: OTEL_LOGS_EXPORTER
-              value: {{ .Values.otel.logsExporter | quote }}
-            - name: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL
-              value: {{ .Values.otel.logsProtocol | quote }}
             - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
               value: {{ .Values.otel.pythonLoggingAutoInstrumentation | quote }}
             {{- end }}

@@ -45,21 +45,7 @@ spec:
               value: {{ .Values.dependencies.flagd.host | quote }}
             - name: FLAGD_PORT
               value: {{ .Values.dependencies.flagd.port | quote }}
-            # Overrides the Operator's default
-            - name: OTEL_SERVICE_NAME
-              value: "ad-service"
-            {{- if .Values.otel.enabled }}
-            - name: OTEL_COLLECTOR_NAME
-              value: {{ .Values.otel.collectorName | quote }}
-            - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
-              value: cumulative
-            - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: {{ include "ad.otelEndpoint" . }}
-            - name: OTEL_LOGS_EXPORTER
-              value: {{ .Values.otel.logsExporter | quote }}
-            - name: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL
-              value: {{ .Values.otel.logsProtocol | quote }}
-            {{- end }}
+
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.livenessProbe }}

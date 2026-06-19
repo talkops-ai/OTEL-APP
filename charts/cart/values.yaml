@@ -74,7 +74,8 @@ topologySpreadConstraints: []
 
 otel:
   enabled: true
-  exporterEndpoint: "http://opentelemetry-otel-collector.otel-demo.svc.cluster.local:4318"
+  exporterEndpoint: "http://opentelemetry-otel-collector.otel-demo.svc.cluster.local:4317"
+  exporterProtocol: "grpc"
   serviceName: "cart-service"
 
 # Init container to wait for valkey

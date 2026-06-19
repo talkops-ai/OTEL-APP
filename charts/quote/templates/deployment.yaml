@@ -39,25 +39,10 @@ spec:
               value: {{ .Values.service.port | quote }}
             - name: IPV6_ENABLED
               value: "false"
-            # Overrides the Operator's default
-            - name: OTEL_SERVICE_NAME
-              value: "quote-service"
-            {{- if .Values.otel.enabled }}
-            - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: {{ include "quote.otelEndpoint" . }}
             - name: OTEL_PHP_AUTOLOAD_ENABLED
               value: "true"
             - name: OTEL_PHP_INTERNAL_METRICS_ENABLED
               value: "true"
-            - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
-              value: cumulative
-            - name: OTEL_LOGS_EXPORTER
-              value: {{ .Values.otel.logsExporter | quote }}
-            - name: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL
-              value: {{ .Values.otel.logsProtocol | quote }}
-            - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
-              value: {{ .Values.otel.pythonLoggingAutoInstrumentation | quote }}
-            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.livenessProbe }}

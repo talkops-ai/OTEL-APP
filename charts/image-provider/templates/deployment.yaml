@@ -37,19 +37,7 @@ spec:
           env:
             - name: IMAGE_PROVIDER_PORT
               value: {{ .Values.service.port | quote }}
-            # Overrides the Operator's default
-            - name: OTEL_SERVICE_NAME
-              value: "image-provider-service"
-            {{- if .Values.otel.enabled }}
-            - name: OTEL_COLLECTOR_HOST
-              value: {{ .Values.otel.collectorName | quote }}
-            - name: OTEL_COLLECTOR_PORT_GRPC
-              value: "4317"
-            - name: OTEL_LOGS_EXPORTER
-              value: {{ .Values.otel.logsExporter | quote }}
-            - name: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL
-              value: {{ .Values.otel.logsProtocol | quote }}
-            {{- end }}
+
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.livenessProbe }}

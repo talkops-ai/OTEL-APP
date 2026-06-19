@@ -45,20 +45,13 @@ spec:
               value: "false"
             - name: VERSION
               value: {{ .Chart.AppVersion | quote }}
-            # Overrides the Operator's default
-            - name: OTEL_SERVICE_NAME
-              value: "currency-service"
             {{- if .Values.otel.enabled }}
-            - name: OTEL_COLLECTOR_NAME
-              value: {{ .Values.otel.collectorName | quote }}
+            - name: OTEL_SERVICE_NAME
+              value: {{ .Values.otel.serviceName | quote }}
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: {{ include "currency.otelEndpoint" . }}
+              value: {{ .Values.otel.exporterEndpoint | quote }}
             - name: OTEL_EXPORTER_OTLP_PROTOCOL
               value: {{ .Values.otel.exporterProtocol | quote }}
-            - name: OTEL_LOGS_EXPORTER
-              value: {{ .Values.otel.logsExporter | quote }}
-            - name: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL
-              value: {{ .Values.otel.logsProtocol | quote }}
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

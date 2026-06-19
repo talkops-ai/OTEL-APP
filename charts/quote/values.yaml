@@ -28,6 +28,7 @@ resources:
 
 podAnnotations:
   resource.opentelemetry.io/service.namespace: otel-demo
+  instrumentation.opentelemetry.io/inject-php: "true"
 
 securityContext:
   runAsNonRoot: true
@@ -72,11 +73,4 @@ tolerations: []
 affinity: {}
 topologySpreadConstraints: []
 
-otel:
-  enabled: true
-  collectorName: opentelemetry-otel-collector.otel-demo.svc.cluster.local
-  exporterEndpoint: "http://opentelemetry-otel-collector.otel-demo.svc.cluster.local:4318"
-  resourceAttributes: "service.namespace=otel-demo"
-  logsExporter: "otlp"
-  logsProtocol: "http/protobuf"
-  pythonLoggingAutoInstrumentation: "true"
+
