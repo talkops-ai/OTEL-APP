@@ -28,7 +28,6 @@ resources:
 
 podAnnotations:
   resource.opentelemetry.io/service.namespace: otel-demo
-  instrumentation.opentelemetry.io/inject-go: "true"
 
 securityContext:
   runAsNonRoot: true
@@ -73,7 +72,10 @@ tolerations: []
 affinity: {}
 topologySpreadConstraints: []
 
-# Removed manual OTEL config since we use auto-instrumentation
+otel:
+  enabled: true
+  exporterEndpoint: "http://opentelemetry-otel-collector.otel-demo.svc.cluster.local:4318"
+  serviceName: "checkout-service"
 
 goMemLimit: "160MiB"
 

@@ -49,6 +49,12 @@ spec:
               value: {{ .Values.dependencies.flagd.host | quote }}
             - name: FLAGD_PORT
               value: {{ .Values.dependencies.flagd.port | quote }}
+            {{- if .Values.otel.enabled }}
+            - name: OTEL_SERVICE_NAME
+              value: {{ .Values.otel.serviceName | quote }}
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ .Values.otel.exporterEndpoint | quote }}
+            {{- end }}
             - name: OTEL_SEMCONV_STABILITY_OPT_IN
               value: database
 
