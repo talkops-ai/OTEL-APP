@@ -57,24 +57,7 @@ spec:
               value: {{ .Values.goMemLimit | quote }}
             - name: KAFKA_ADDR
               value: "{{ .Values.dependencies.kafka.host }}:{{ .Values.dependencies.kafka.port }}"
-            {{- if .Values.otel.enabled }}
-            - name: OTEL_SERVICE_NAME
-              value: {{ .Values.otel.serviceName | quote }}
-            - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: {{ .Values.otel.exporterEndpoint | quote }}
-            - name: OTEL_LOGS_EXPORTER
-              value: {{ .Values.otel.logsExporter | quote }}
-            - name: OTEL_TRACES_EXPORTER
-              value: {{ .Values.otel.tracesExporter | quote }}
-            - name: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL
-              value: {{ .Values.otel.logsProtocol | quote }}
-            - name: OTEL_EXPORTER_OTLP_TRACES_PROTOCOL
-              value: {{ .Values.otel.tracesProtocol | quote }}
-            - name: OTEL_METRICS_EXPORTER
-              value: {{ .Values.otel.metricsExporter | quote }}
-            - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
-              value: {{ .Values.otel.metricsTemporalityPreference | quote }}
-            {{- end }}
+
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.livenessProbe }}

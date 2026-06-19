@@ -28,6 +28,7 @@ resources:
 
 podAnnotations:
   resource.opentelemetry.io/service.namespace: otel-demo
+  instrumentation.opentelemetry.io/inject-rust: "true"
 
 securityContext:
   runAsNonRoot: true
@@ -72,18 +73,7 @@ tolerations: []
 affinity: {}
 topologySpreadConstraints: []
 
-otel:
-  enabled: true
-  collectorName: opentelemetry-otel-collector.otel-demo.svc.cluster.local
-  exporterEndpoint: "http://opentelemetry-otel-collector.otel-demo.svc.cluster.local:4318"
-  resourceAttributes: "service.namespace=otel-demo"
-  logsExporter: "otlp"
-  logsProtocol: "http/protobuf"
-  tracesExporter: "otlp"
-  tracesProtocol: "http/protobuf"
-  metricsExporter: "otlp"
-  metricsTemporalityPreference: "cumulative"
-  serviceName: "shipping-service"
+# Removed manual OTEL config since we use auto-instrumentation
 
 dependencies:
   quote:

@@ -28,6 +28,7 @@ resources:
 
 podAnnotations:
   resource.opentelemetry.io/service.namespace: otel-demo
+  instrumentation.opentelemetry.io/inject-dotnet: "true"
 
 securityContext:
   runAsNonRoot: true
@@ -72,19 +73,7 @@ tolerations: []
 affinity: {}
 topologySpreadConstraints: []
 
-# OpenTelemetry configuration (disabled by default — enable when collector is ready)
-otel:
-  enabled: true
-  collectorName: opentelemetry-otel-collector.otel-demo.svc.cluster.local
-  exporterEndpoint: "http://opentelemetry-otel-collector.otel-demo.svc.cluster.local:4318"
-  resourceAttributes: "service.namespace=otel-demo"
-  logsExporter: "otlp"
-  logsProtocol: "http/protobuf"
-  tracesExporter: "otlp"
-  tracesProtocol: "http/protobuf"
-  metricsExporter: "otlp"
-  metricsTemporalityPreference: "cumulative"
-  serviceName: "cart-service"
+# Removed manual OTEL config since we use auto-instrumentation
 
 # Init container to wait for valkey
 initContainers:
