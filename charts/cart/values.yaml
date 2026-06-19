@@ -80,6 +80,11 @@ otel:
   resourceAttributes: "service.namespace=otel-demo"
   logsExporter: "otlp"
   logsProtocol: "http/protobuf"
+  tracesExporter: "otlp"
+  tracesProtocol: "http/protobuf"
+  metricsExporter: "otlp"
+  metricsTemporalityPreference: "cumulative"
+  serviceName: "cart-service"
 
 # Init container to wait for valkey
 initContainers:

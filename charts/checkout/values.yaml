@@ -76,10 +76,14 @@ otel:
   enabled: true
   collectorName: opentelemetry-otel-collector.otel-demo.svc.cluster.local
   exporterEndpoint: "http://opentelemetry-otel-collector.otel-demo.svc.cluster.local:4318"
-  exporterProtocol: "grpc"
   resourceAttributes: "service.namespace=otel-demo"
   logsExporter: "otlp"
-  logsProtocol: "grpc"
+  logsProtocol: "http/protobuf"
+  tracesExporter: "otlp"
+  tracesProtocol: "http/protobuf"
+  metricsExporter: "otlp"
+  metricsTemporalityPreference: "cumulative"
+  serviceName: "checkout-service"
 
 goMemLimit: "160MiB"
 

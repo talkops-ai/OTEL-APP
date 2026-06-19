@@ -81,6 +81,11 @@ otel:
   resourceAttributes: "service.namespace=otel-demo"
   logsExporter: "otlp"
   logsProtocol: "http/protobuf"
+  tracesExporter: "otlp"
+  tracesProtocol: "http/protobuf"
+  metricsExporter: "otlp"
+  metricsTemporalityPreference: "cumulative"
+  serviceName: "recommendation-service"
   pythonLoggingAutoInstrumentation: "true"
 
 # Service dependencies

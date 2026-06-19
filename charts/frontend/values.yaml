@@ -83,6 +83,11 @@ otel:
   resourceAttributes: "service.namespace=otel-demo"
   logsExporter: "otlp"
   logsProtocol: "http/protobuf"
+  tracesExporter: "otlp"
+  tracesProtocol: "http/protobuf"
+  metricsExporter: "otlp"
+  metricsTemporalityPreference: "cumulative"
+  serviceName: "frontend-service"
   # Browser-side traces endpoint (typically through port-forward)
   publicOtlpTracesEndpoint: "http://localhost:8080/otlp-http/v1/traces"
 

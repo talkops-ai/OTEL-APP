@@ -49,24 +49,25 @@ spec:
               value: {{ .Values.dependencies.flagd.host | quote }}
             - name: FLAGD_PORT
               value: {{ .Values.dependencies.flagd.port | quote }}
-            # Overrides the Operator's default
-            - name: OTEL_SERVICE_NAME
-              value: "product-catalog-service"
             - name: OTEL_SEMCONV_STABILITY_OPT_IN
               value: database
             {{- if .Values.otel.enabled }}
-            - name: OTEL_COLLECTOR_NAME
-              value: {{ .Values.otel.collectorName | quote }}
-            - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
-              value: cumulative
+            - name: OTEL_SERVICE_NAME
+              value: {{ .Values.otel.serviceName | quote }}
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: {{ include "product-catalog.otelEndpoint" . }}
-            - name: OTEL_EXPORTER_OTLP_PROTOCOL
-              value: {{ .Values.otel.exporterProtocol | quote }}
+              value: {{ .Values.otel.exporterEndpoint | quote }}
             - name: OTEL_LOGS_EXPORTER
               value: {{ .Values.otel.logsExporter | quote }}
+            - name: OTEL_TRACES_EXPORTER
+              value: {{ .Values.otel.tracesExporter | quote }}
             - name: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL
               value: {{ .Values.otel.logsProtocol | quote }}
+            - name: OTEL_EXPORTER_OTLP_TRACES_PROTOCOL
+              value: {{ .Values.otel.tracesProtocol | quote }}
+            - name: OTEL_METRICS_EXPORTER
+              value: {{ .Values.otel.metricsExporter | quote }}
+            - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+              value: {{ .Values.otel.metricsTemporalityPreference | quote }}
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

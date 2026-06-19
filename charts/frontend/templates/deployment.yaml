@@ -67,26 +67,27 @@ spec:
               value: {{ .Values.dependencies.flagd.port | quote }}
             - name: ENV_PLATFORM
               value: kubernetes
-            # Overrides the Operator's default
-            - name: OTEL_SERVICE_NAME
-              value: "frontend-service"
             {{- if .Values.otel.enabled }}
-            - name: OTEL_COLLECTOR_NAME
-              value: {{ .Values.otel.collectorName | quote }}
-            - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
-              value: cumulative
-            - name: OTEL_COLLECTOR_HOST
-              value: {{ .Values.otel.collectorName | quote }}
+            - name: OTEL_SERVICE_NAME
+              value: {{ .Values.otel.serviceName | quote }}
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: {{ include "frontend.otelEndpoint" . }}
+              value: {{ .Values.otel.exporterEndpoint | quote }}
+            - name: OTEL_LOGS_EXPORTER
+              value: {{ .Values.otel.logsExporter | quote }}
+            - name: OTEL_TRACES_EXPORTER
+              value: {{ .Values.otel.tracesExporter | quote }}
+            - name: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL
+              value: {{ .Values.otel.logsProtocol | quote }}
+            - name: OTEL_EXPORTER_OTLP_TRACES_PROTOCOL
+              value: {{ .Values.otel.tracesProtocol | quote }}
+            - name: OTEL_METRICS_EXPORTER
+              value: {{ .Values.otel.metricsExporter | quote }}
+            - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+              value: {{ .Values.otel.metricsTemporalityPreference | quote }}
             - name: WEB_OTEL_SERVICE_NAME
               value: frontend-web
             - name: PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
               value: {{ .Values.otel.publicOtlpTracesEndpoint | quote }}
-            - name: OTEL_LOGS_EXPORTER
-              value: {{ .Values.otel.logsExporter | quote }}
-            - name: OTEL_EXPORTER_OTLP_LOGS_PROTOCOL
-              value: {{ .Values.otel.logsProtocol | quote }}
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
